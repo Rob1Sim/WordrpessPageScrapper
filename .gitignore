@@ -1,4 +1,4 @@
-scraper/.env
+scrapper/.env
 __pycache__/
 .idea/
 venv/

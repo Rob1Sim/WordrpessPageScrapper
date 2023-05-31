@@ -8,7 +8,7 @@ scrap = WpScrapper()
 scrap.login()
 
 # Chargement dynamique des pages
-template_files = listdir('scraper/templates')
+template_files = listdir('scrapper/templates')
 html_files = [file for file in template_files if file.endswith('.html')]
 
 

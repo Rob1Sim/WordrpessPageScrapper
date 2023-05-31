@@ -4,6 +4,6 @@ app = Flask(__name__)
 
 
 def start_server():
-    from scraper import routes
+    from scrapper import routes
 
     return app

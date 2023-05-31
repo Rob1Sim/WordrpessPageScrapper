@@ -70,9 +70,9 @@ class WpScrapper:
         # Récupère le nom de l'url
         url_name = url.split('/')
         try:
-            file_name = "./scraper/templates/" + url_name[-2] + ".html"
+            file_name = "./scrapper/templates/" + url_name[-2] + ".html"
         except:
-            file_name = "./scraper/templates/page" + str(randint(-10000, 10000)) + str(randint(-10000, 10000)) + str(
+            file_name = "./scrapper/templates/page" + str(randint(-10000, 10000)) + str(randint(-10000, 10000)) + str(
                 randint(-10000, 10000)) + ".html"
 
         with open(file_name, "wb") as file:
