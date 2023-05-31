@@ -3,40 +3,66 @@ from dotenv import load_dotenv
 import requests
 
 
-load_dotenv()
+class WpScrapper:
+    session = None
+    base_url = None
 
-# Récupère les données stocké dans la varialble d'environnement URL
-url = os.getenv('URL')
+    def __init__(self):
+        load_dotenv()
+        self.base_url = os.getenv('URL')
 
-login_url = url + "wp-login.php"
-username = os.getenv('BOT_LOGIN')
-password = os.getenv('BOT_PASSWORD')
+    def login(self):
+        """
+        Ce connecte au site WP avec les donnée du .env
+        Affiche une erreur si la connexion echoue
+        :return:
+        """
 
-login_data = {
-    'log': username,
-    'pwd': password,
-    'wp-submit': 'Log In',
-    'redirect_to': '',
-    'testcookie': 1
-}
+        login_url = self.base_url + "wp-login.php"
+        username = os.getenv('BOT_LOGIN')
+        password = os.getenv('BOT_PASSWORD')
 
-# Récupère la session sécurisé dans cette variable
-session = requests.Session()
-response = session.post(login_url, data=login_data)
+        login_data = {
+            'log': username,
+            'pwd': password,
+            'wp-submit': 'Log In',
+            'redirect_to': '',
+            'testcookie': 1
+        }
 
-if response.status_code != 200:
-    print("Echec de connexion au site " + str(response.status_code))
-else:
-    page = session.get(url)
-    content = response.content
+        # Récupère la session sécurisé dans cette variable
+        session = requests.Session()
 
-    # Nom du fichier de destination
-    file_name = "result.html"
+        response = session.post(login_url, data=login_data)
 
-    # Chemin complet du fichier
+        if response.status_code != 200:
+            raise Exception("Echec de connexion au site " + str(response.status_code), response.text,
+                            response.status_code, response.content)
 
-    # Écriture du contenu de la réponse dans le fichier
-    with open(file_name, "wb") as file:
-        file.write(content)
+        else:
+            self.session = session
+            return
 
-    print(f"Le fichier {file_name} a été créé avec succès.")
+    def scrap_page(self, url):
+        """
+        Récupère le code HTML, CSS et JS de l'url passé en paramètre, et en créer un fichier HTML dans le dossier templates
+        :param url: la sous url ../cette-url
+        :param session: La session d'authentification, nécéssaire sinon la page renvoyé sera la page de connexion
+        :return:
+        """
+        base_url = self.base_url + url
+
+        if self.session is not None:
+            cookies = self.session.cookies
+            page = self.session.get(base_url + url, cookies=cookies)
+            content = page.content
+
+            file_name = "./extranet/templates/result.html"
+
+            with open(file_name, "wb") as file:
+                file.write(content)
+
+            print(f"Le fichier {file_name} a été créé avec succès.")
+            return
+        else:
+            raise Exception("Aucune session de connexion n'a été trouver")
