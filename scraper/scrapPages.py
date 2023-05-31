@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import requests
 from bs4 import BeautifulSoup
+from random import randint
 
 
 def get_urls_from_html(html):
@@ -56,7 +57,7 @@ class WpScrapper:
             self.session = session
             return
 
-    def scrap_page(self, url):
+    def scrap_page(self, url: str):
         """
         Récupère le code HTML, CSS et JS de l'url passé en paramètre, et en créer un fichier HTML dans le dossier templates
         :param url: la sous url ../cette-url
@@ -66,7 +67,13 @@ class WpScrapper:
         page = self.__get_page(url)
         content = page.content
 
-        file_name = "./scraper/templates/result.html"
+        # Récupère le nom de l'url
+        url_name = url.split('/')
+        try:
+            file_name = "./scraper/templates/" + url_name[-2] + ".html"
+        except:
+            file_name = "./scraper/templates/page" + str(randint(-10000, 10000)) + str(randint(-10000, 10000)) + str(
+                randint(-10000, 10000)) + ".html"
 
         with open(file_name, "wb") as file:
             file.write(content)
@@ -76,20 +83,22 @@ class WpScrapper:
     def scrap_page_to_string(self, url):
         return self.__get_page(url).text
 
-    def __get_page(self, url):
+    def __get_page(self, url: str):
         """
         Retourne les donnée scrapper sur une page
         :param url:
         :return:
         """
-        base_url = self.base_url + url
+        base_url = url
+        if not url.startswith('http'):
+            base_url = self.base_url + url
         if self.session is not None:
             cookies = self.session.cookies
             return self.session.get(base_url + url, cookies=cookies)
         else:
             raise Exception("Aucune session de connexion n'a été trouver")
 
-    def crawl_website(self,url):
+    def crawl_website(self, url):
         """
         Analize et récupère toutes les pages indexés sur un site
         :param url:
@@ -108,4 +117,4 @@ class WpScrapper:
             visited_urls.add(current_url)
             urls_to_visit.extend(urls)
 
-            print(current_url)
+            self.scrap_page(current_url)
