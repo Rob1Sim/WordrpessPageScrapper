@@ -1,4 +1,4 @@
-from extranet import start_server
+from scraper import start_server
 
 app = start_server()
 

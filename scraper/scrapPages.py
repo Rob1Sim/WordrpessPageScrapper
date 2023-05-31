@@ -57,7 +57,7 @@ class WpScrapper:
             page = self.session.get(base_url + url, cookies=cookies)
             content = page.content
 
-            file_name = "./extranet/templates/result.html"
+            file_name = "./scraper/templates/result.html"
 
             with open(file_name, "wb") as file:
                 file.write(content)
