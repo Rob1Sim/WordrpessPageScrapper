@@ -30,10 +30,8 @@ def hello_world():  # put application's code here
 
 @app.route("/scrap")
 def get_scrap():
-    scrap.scrap_page("annuaires/")
+    scrap.crawl_website("annuaires/")
     return render_template('result.html')
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return ""
+
