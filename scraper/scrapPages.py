@@ -10,6 +10,8 @@ class WpScrapper:
     def __init__(self):
         load_dotenv()
         self.base_url = os.getenv('URL')
+        if self.base_url == None:
+            raise Exception("Le fichier .env est manquant")
 
     def login(self):
         """

@@ -35,5 +35,16 @@ Assurez-vous également d'inclure un fichier requirements.txt contenant les dép
 pip install -r requirements.txt
 ```
 
+## Configuration  
+Un fichier de configuration .env doit être présent dans dans le dossier scrapper/
+il doit contenir les variables suivantes : 
+```
+BOT_LOGIN=
+BOT_PASSWORD=
+URL=
+```
+Les 2 premiers champs corresponds aux identifiants pour le compte WP du bot, 
+l'URL correspond à L'URL du site WP, il doit se terminé par /
+
 ## Lancement :  
 Le script utilise un serveur flask il suffit de lancer le script app.py
