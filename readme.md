@@ -52,5 +52,5 @@ Le script utilise un serveur flask il suffit de lancer le script app.py
 ## Lancement Alternatif :
 Une image docker peut être construite, ou récupérer sur Docker Hub :
 ```
-docker pull robinsim1/wordpress-page-scrapper:v1.0
+docker pull ghcr.io/rob1sim/wordrpesspagescrapper:latest
 ```
