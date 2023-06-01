@@ -3,19 +3,55 @@ from dotenv import load_dotenv
 import requests
 from bs4 import BeautifulSoup
 from random import randint
+from urllib.parse import urlparse
 
 
 def get_urls_from_html(html):
+    """
+    Cherche dans les pages des liens vers d'autre pages
+    :param html:
+    :return:
+    """
     soup = BeautifulSoup(html, 'html.parser')
     urls = []
     for link in soup.find_all('a'):
         url = link.get('href')
         if url:
-            urls.append(url)
+            url_parser = urlparse(url)
+            base_url_parser = urlparse(os.getenv('URL'))
+            if url_parser.netloc == base_url_parser.netloc:
+                urls.append(url)
     return urls
 
 
+def set_href_to_relative(content: bytes):
+    """
+    Modifie une page html pour changer les liens vers des liens relatifs
+    :param content:
+    :return: La page modifié
+    """
+    soup = BeautifulSoup(content, 'html.parser')
+
+    anchors = soup.select('a')
+
+    for anchor in anchors:
+        try:
+            href = anchor['href']
+            new_href = urlparse(href)
+            final_path = new_href.path
+            if new_href.path[-1] == "/":
+                final_path = final_path[:-1]
+            anchor['href'] = final_path
+        except:
+            continue
+
+    return str(soup)
+
+
 class WpScrapper:
+    """
+    Objet qui s'occupe de se connecter et d'envoyer le bot à la recherche de pages puis de les enregistrés
+    """
     session = None
     base_url = None
 
@@ -44,7 +80,7 @@ class WpScrapper:
             'testcookie': 1
         }
 
-        # Récupère la session sécurisé dans cette variable
+        # Récupère la session sécurisée dans cette variable
         session = requests.Session()
 
         response = session.post(login_url, data=login_data)
@@ -66,7 +102,7 @@ class WpScrapper:
         """
         page = self.__get_page(url)
         content = page.content
-
+        correct_content = set_href_to_relative(content)
         # Récupère le nom de l'url
         url_name = url.split('/')
         try:
@@ -75,12 +111,15 @@ class WpScrapper:
             file_name = "./scrapper/templates/page" + str(randint(-10000, 10000)) + str(randint(-10000, 10000)) + str(
                 randint(-10000, 10000)) + ".html"
 
-        with open(file_name, "wb") as file:
-            file.write(content)
+        with open(file_name, "w") as file:
+            file.write(correct_content)
         print(f"Le fichier {file_name} a été créé avec succès.")
         return
 
     def scrap_page_to_string(self, url):
+        request = self.__get_page(url)
+        if request.status_code == 404:
+            return False
         return self.__get_page(url).text
 
     def __get_page(self, url: str):
@@ -113,8 +152,9 @@ class WpScrapper:
                 continue
 
             html = self.scrap_page_to_string(current_url)
-            urls = get_urls_from_html(html)
-            visited_urls.add(current_url)
-            urls_to_visit.extend(urls)
+            if html:
+                urls = get_urls_from_html(html)
+                visited_urls.add(current_url)
+                urls_to_visit.extend(urls)
 
-            self.scrap_page(current_url)
+                self.scrap_page(current_url)
