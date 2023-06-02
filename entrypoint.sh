@@ -1,9 +1,11 @@
 #!/bin/sh
 
+LOG_FILE="/app/logs/server.log"
+
 # Fonction pour démarrer le script Python
 start_script() {
     echo "Démarrage du script Python..."
-    python app.py > /dev/null 2>&1 &
+    python app.py >> "$LOG_FILE" 2>&1 &
     APP_PID=$!
     echo "Processus Python démarré. PID : $APP_PID"
 }
