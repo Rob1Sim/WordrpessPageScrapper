@@ -1,5 +1,6 @@
-scrapper/.env
+wpScrapper/.env
 __pycache__/
 .idea/
 venv/
 logs/
+server/templates/page_*

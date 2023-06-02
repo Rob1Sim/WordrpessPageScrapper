@@ -1,6 +1,5 @@
 from flask import render_template
 from . import app
-from .scrapPages import WpScrapper
 from os import listdir, path
 
 
@@ -9,7 +8,9 @@ def update_file_routes():
     Scan les fichier présent dans templates pour en créer des routes
     :return:
     """
-    template_files = listdir('scrapper/templates')
+
+    #Listes les pages et créer des routes
+    template_files = listdir('server/templates')
     html_files = [file for file in template_files if file.endswith('.html')]
 
     # Génère dynamiquement des routes en fonction des fichiers présents dans le dossier "templates"
@@ -23,14 +24,13 @@ def render_template_file(filename):
 
 
 # Lancement du bot
-scrap = WpScrapper()
-scrap.login()
+
 update_file_routes()
 
 
 @app.route('/')
 def hello_world():
-    template_files = listdir('scrapper/templates')
+    template_files = listdir('server/templates')
     html_files = [file for file in template_files if file.endswith('.html')]
     link_list = ""
     for file in html_files:
@@ -38,7 +38,4 @@ def hello_world():
     return link_list
 
 
-@app.route("/scrap")
-def get_scrap():
-    scrap.crawl_website("annuaires/")
-    return
+

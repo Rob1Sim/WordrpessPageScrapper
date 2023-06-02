@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 
 def get_urls_from_html(html):
     """
-    Cherche dans les pages des liens vers d'autre pages
+    Cherche dans les pages des liens vers d'autres pages
     :param html:
     :return:
     """
@@ -28,7 +28,7 @@ def set_href_to_relative(content: bytes):
     """
     Modifie une page html pour changer les liens vers des liens relatifs
     :param content:
-    :return: La page modifié
+    :return: Le page modifié
     """
     soup = BeautifulSoup(content, 'html.parser')
 
@@ -106,9 +106,9 @@ class WpScrapper:
         # Récupère le nom de l'url
         url_name = url.split('/')
         try:
-            file_name = "./scrapper/templates/" + url_name[-2] + ".html"
+            file_name = "./server/templates/page_" + url_name[-2] + ".html"
         except:
-            file_name = "./scrapper/templates/page" + str(randint(-10000, 10000)) + str(randint(-10000, 10000)) + str(
+            file_name = "./server/templates/page_" + str(randint(-10000, 10000)) + str(randint(-10000, 10000)) + str(
                 randint(-10000, 10000)) + ".html"
 
         with open(file_name, "w") as file:
@@ -124,7 +124,7 @@ class WpScrapper:
 
     def __get_page(self, url: str):
         """
-        Retourne les donnée scrapper sur une page
+        Retourne les donnée server sur une page
         :param url:
         :return:
         """
