@@ -9,4 +9,4 @@ def start_scrapp():
     :return:
     """
     scrapper.login()
-    scrapper.scrap_page("annuaires/")
+    scrapper.crawl_website("annuaires/")
