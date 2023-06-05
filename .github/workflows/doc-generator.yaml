@@ -28,7 +28,7 @@ jobs:
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
       - run: ls ${{ github.workspace }}
-      - run: pdoc wpScrapper/ -o ./docs
+      - run: pdoc --skip-errors wpScrapper/ -o ./docs
 
       - uses: actions/upload-pages-artifact@v1
         with:
