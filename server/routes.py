@@ -1,4 +1,6 @@
-from flask import render_template
+"""
+Gestion des routes du serveur
+"""
 from . import app
 from os import listdir, path
 

@@ -1,3 +1,6 @@
+"""
+Serveur web qui met à disposition les pages téléchargés
+"""
 from flask import Flask, render_template
 from os import listdir, path
 

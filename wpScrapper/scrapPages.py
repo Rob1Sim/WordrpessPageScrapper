@@ -1,3 +1,6 @@
+"""
+Coeur du module ScrapPages, il contients tous les fonction et classe pour se connecter et récupérer des pages ou des liens
+"""
 import os
 from dotenv import load_dotenv
 import requests
@@ -50,7 +53,7 @@ def set_href_to_relative(content: bytes):
 
 class WpScrapper:
     """
-    Objet qui s'occupe de se connecter et d'envoyer le bot à la recherche de pages puis de les enregistrés
+    Classe qui fournit les méthodes pour connecter le bot et récupérer les pages
     """
     session = None
     base_url = None

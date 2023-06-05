@@ -1,3 +1,6 @@
+"""
+Module qui télécharges des pages depuis un fichier WP
+"""
 from .scrapPages import WpScrapper
 
 scrapper = WpScrapper()
