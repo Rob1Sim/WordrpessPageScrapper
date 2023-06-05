@@ -1,5 +1,6 @@
 # Wordpress Page Scrapper  
 Petit Tools qui s'occupe de récupérer des pages (privé ou non) d'un serveur Wordpress, les pages sont récupérer puis stocker et accesible depuis un serveur Flask.  
+La documentation est disponible à cette adresse : https://rob1sim.github.io/WordrpessPageScrapper/wpScrapper/scrapPages.html
 ## Prérequis
 
 - Python 3.6 ou une version ultérieure
